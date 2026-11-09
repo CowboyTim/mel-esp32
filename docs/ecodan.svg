@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 800" width="1100" height="800" font-family="Helvetica, Arial, sans-serif">
+<rect width="1100" height="800" fill="#ffffff"/>
+<text x="40" y="50" font-size="22" font-weight="bold" fill="#1d2330">Ecodan CN105 bridge: wiring</text><text x="40" y="74" font-size="13" fill="#5b6475">esp-at on an ESP32-S3 SuperMini. Optocouplers on each line, isolated 5 V for the ESP side.</text>
+<line x1="460" y1="200" x2="460" y2="460" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 5"/>
+<rect x="60" y="150" width="180" height="250" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+<text x="150.0" y="174" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d2330">CN105</text>
+<text x="150.0" y="192" font-size="11" text-anchor="middle" font-weight="normal" fill="#5b6475">heat pump service port</text>
+<text x="150.0" y="122" font-size="13" text-anchor="middle" font-weight="bold" fill="#5b6475">heat pump side</text>
+<text x="232" y="174" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">1</text>
+<text x="232" y="214" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">2</text>
+<text x="232" y="254" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">3</text>
+<text x="232" y="294" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">4</text>
+<text x="232" y="374" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">5</text>
+<line x1="240" y1="170" x2="280" y2="170" stroke="#9ca3af" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="284" y="174" font-size="12" text-anchor="start" font-weight="normal" fill="#9ca3af">not connected</text>
+<circle cx="240" cy="170" r="3.5" fill="#9ca3af"/>
+<line x1="240" y1="210" x2="280" y2="210" stroke="#334155" stroke-width="2"/>
+<circle cx="240" cy="210" r="3.5" fill="#334155"/>
+<text x="284" y="214" font-size="12" text-anchor="start" font-weight="bold" fill="#334155">GND (HP)</text>
+<circle cx="240" cy="250" r="3.5" fill="#c2410c"/>
+<circle cx="240" cy="290" r="3.5" fill="#1d4ed8"/>
+<circle cx="240" cy="370" r="3.5" fill="#1d4ed8"/>
+<rect x="400" y="226" width="120" height="88" rx="6" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+<text x="408" y="254" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">A</text>
+<text x="408" y="294" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">K</text>
+<text x="512" y="254" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">C</text>
+<text x="512" y="294" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">E</text>
+<text x="460" y="270" font-size="13" text-anchor="middle" font-weight="bold" fill="#1d2330">PC817 (A)</text>
+<text x="460" y="288" font-size="11" text-anchor="middle" font-weight="normal" fill="#5b6475">RX path</text>
+<rect x="400" y="350" width="120" height="88" rx="6" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+<text x="408" y="374" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">C</text>
+<text x="408" y="414" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">E</text>
+<text x="512" y="374" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">A</text>
+<text x="512" y="414" font-size="11" text-anchor="end" font-weight="normal" fill="#5b6475">K</text>
+<text x="460" y="394" font-size="13" text-anchor="middle" font-weight="bold" fill="#1d2330">PC817 (B)</text>
+<text x="460" y="412" font-size="11" text-anchor="middle" font-weight="normal" fill="#5b6475">TX path</text>
+<line x1="240" y1="250" x2="400" y2="250" stroke="#c2410c" stroke-width="2"/>
+<text x="320.0" y="244" font-size="12" text-anchor="middle" font-weight="bold" fill="#c2410c">+5V (HP) via 470R</text>
+<line x1="240" y1="290" x2="400" y2="290" stroke="#1d4ed8" stroke-width="2"/>
+<text x="320.0" y="306" font-size="12" text-anchor="middle" font-weight="bold" fill="#1d4ed8">TX (HP out)</text>
+<line x1="240" y1="370" x2="400" y2="370" stroke="#1d4ed8" stroke-width="2"/>
+<text x="320.0" y="364" font-size="12" text-anchor="middle" font-weight="bold" fill="#1d4ed8">RX (HP in)</text>
+<text x="320.0" y="392" font-size="11" text-anchor="middle" font-weight="normal" fill="#5b6475">4k7 pull-up to +5V</text>
+<line x1="400" y1="410" x2="360" y2="410" stroke="#334155" stroke-width="2"/>
+<circle cx="400" cy="410" r="3.5" fill="#334155"/>
+<text x="356" y="414" font-size="12" text-anchor="end" font-weight="bold" fill="#334155">GND (HP)</text>
+<rect x="560" y="150" width="160" height="44" rx="8" fill="#f8fafc" stroke="#9333ea" stroke-width="2"/>
+<text x="640.0" y="174" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d2330">isolated DC-DC</text>
+<text x="640.0" y="192" font-size="11" text-anchor="middle" font-weight="normal" fill="#5b6475">5 V in, 5 V out</text>
+<line x1="560" y1="172" x2="520" y2="172" stroke="#c2410c" stroke-width="2"/>
+<circle cx="560" cy="172" r="3.5" fill="#c2410c"/>
+<text x="516" y="176" font-size="12" text-anchor="end" font-weight="bold" fill="#c2410c">+5V (HP)</text>
+<rect x="780" y="130" width="200" height="330" rx="8" fill="#f8fafc" stroke="#6b21a8" stroke-width="2"/>
+<text x="880.0" y="154" font-size="15" text-anchor="middle" font-weight="bold" fill="#1d2330">ESP32-S3 SuperMini</text>
+<text x="880.0" y="172" font-size="11" text-anchor="middle" font-weight="normal" fill="#5b6475">esp-at firmware</text>
+<text x="880.0" y="480" font-size="13" text-anchor="middle" font-weight="bold" fill="#5b6475">isolated side</text>
+<text x="788" y="174" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">5V</text>
+<text x="788" y="254" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">GPIO17 RX</text>
+<text x="788" y="294" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">GND</text>
+<text x="788" y="374" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">3V3</text>
+<text x="788" y="414" font-size="11" text-anchor="start" font-weight="normal" fill="#5b6475">GPIO18 TX</text>
+<line x1="720" y1="172" x2="780" y2="170" stroke="#9333ea" stroke-width="2"/>
+<text x="750.0" y="164" font-size="12" text-anchor="middle" font-weight="bold" fill="#9333ea">5V ISO</text>
+<line x1="520" y1="250" x2="780" y2="250" stroke="#15803d" stroke-width="2"/>
+<text x="650.0" y="244" font-size="12" text-anchor="middle" font-weight="bold" fill="#1d4ed8">RX to GPIO17</text>
+<text x="650.0" y="266" font-size="11" text-anchor="middle" font-weight="normal" fill="#5b6475">10k pull-up to 3V3</text>
+<line x1="520" y1="290" x2="780" y2="290" stroke="#6b21a8" stroke-width="2"/>
+<text x="650.0" y="306" font-size="12" text-anchor="middle" font-weight="bold" fill="#6b21a8">GND (ISO)</text>
+<line x1="780" y1="370" x2="520" y2="370" stroke="#15803d" stroke-width="2"/>
+<text x="650.0" y="364" font-size="12" text-anchor="middle" font-weight="bold" fill="#15803d">3V3 via 330R</text>
+<line x1="780" y1="410" x2="520" y2="410" stroke="#1d4ed8" stroke-width="2"/>
+<text x="650.0" y="426" font-size="12" text-anchor="middle" font-weight="bold" fill="#1d4ed8">TX from GPIO18</text>
+<text x="460" y="196" font-size="11" text-anchor="middle" font-weight="normal" fill="#5b6475">isolation barrier</text>
+<rect x="40" y="508" width="1020" height="262" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+<text x="60" y="530" font-size="13" text-anchor="start" font-weight="bold" fill="#1d2330">Wiring (proposed, verify on hardware):</text>
+<text x="60" y="550" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Each signal goes through a PC817 optocoupler. The ESP side has its own isolated 5 V and its GND is separate from the heat pump GND.</text>
+<text x="60" y="570" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- CN105 pin 1 not connected. Pin 2 GND, pin 3 +5V, pin 4 TX (heat pump out), pin 5 RX (heat pump in).</text>
+<text x="60" y="590" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Both paths are non-inverting: keep UART inversion off (AT+UART1 inverted = 0).</text>
+<text x="60" y="610" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Parts: 2x PC817 (6N137 if you need more speed); 470R LED (HP side); 330R LED (ESP side);</text>
+<text x="60" y="630" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">  4k7 pull-up to +5V on the RX line (HP side); 10k pull-up to 3V3 on the GPIO17 line (ESP side);</text>
+<text x="60" y="650" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">  isolated 5 V to 5 V DC-DC, 1 W or more.</text>
+<text x="60" y="670" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- UART on GPIO17 (RX) and GPIO18 (TX): AT+UART1=2400,8,1,1,17,18</text>
+<text x="60" y="690" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">  (2400 baud, 8 data bits, even parity, 1 stop bit. Not checked against the Ecodan protocol.)</text>
+<text x="60" y="710" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- USB-C on the ESP side ties its GND to the PC. Don't plug USB in while the heat pump is connected, or use a USB isolator.</text>
+<text x="60" y="730" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Check the heat pump's own pull-ups on TX/RX first. If they're already there, drop the 4k7.</text>
+<text x="60" y="750" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- No mains on this board.</text>
+</svg>
