@@ -1,0 +1,26 @@
+# Ecodan bridge boards, used by deploy.py.
+#
+# One table per physical board. deploy.py finds the board's serial port by
+# its MAC: native-USB ESP32-C3/S3 boards report the MAC as their USB serial
+# number, so no reset or esptool call is needed for that.
+#   mac  = MAC as esptool prints it ("python3 deploy.py identify <port>")
+#   chip = esp32c3 | esp32s3 (selects the arduino-cli FQBN and esptool --chip)
+#   role = ECODAN (selects the sketch: esp-at/, the esp-at submodule)
+# A role can have several boards (spares). Selecting the role ("deploy ecodan") means all of
+# them: the ones that are plugged in are flashed, the others skipped.
+#
+# Fill in the macs: plug a board in and run "python3 deploy.py list" or
+# "python3 deploy.py identify <port>".
+
+[boards.ecodan]
+mac  = "9C:13:9E:F0:50:60"
+chip = "esp32s3"           # ESP32-S3 SuperMini on the CN105 link to the heat pump
+role = "ECODAN"
+
+# A spare board (identical, same firmware). With two boards of a role, "python3 deploy.py deploy ecodan"
+# builds once and flashes whichever of them is plugged in (and says which it skipped); name one
+# ("deploy ecodan_spare") to require that board. Remove the # signs and fill in its mac:
+#[boards.ecodan_spare]
+#mac  = ""
+#chip = "esp32s3"
+#role = "ECODAN"
