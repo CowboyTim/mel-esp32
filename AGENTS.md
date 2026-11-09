@@ -17,7 +17,7 @@ MelcoBEMS Mini), or a Modbus layer on top of this board. Neither is decided.
 ## Layout
 
 - `esp-at/`: git submodule, [aardbeiplantje/esp-at](https://github.com/aardbeiplantje/esp-at),
-  branch `ecodan` (the pinned commit is there). The firmware base. Its sketch
+  branch `main` (the BLE PIN and local-TCP changes are merged). The firmware base. Its sketch
   is `esp-at/esp-at/esp-at.ino`. Clone with `--recurse-submodules`, or run
   `git submodule update --init`.
 - The Ecodan CN105 logic goes in esp-at's plugin hooks (`plugins.cpp`) in the
@@ -38,12 +38,15 @@ python3 deploy.py build all
 ```
 
 `boards.toml` has only `esp32s3` boards right now. `esp32c3` must still
-compile, so check it directly when you change the firmware:
+compile, so check it directly when you change the firmware. Compile a copy of
+the sketch, not the submodule: arduino-cli writes a `build/` into the sketch
+folder.
 
 ```sh
+rm -rf .build/c3 && mkdir -p .build/c3 && cp -r esp-at/esp-at .build/c3/
 arduino-cli compile -b esp32:esp32:esp32c3 --build-property \
   "build.extra_flags=-DARDUINO_USB_MODE=1 -DARDUINO_USB_CDC_ON_BOOT=1 -D_ARDUINO_BLE_H_" \
-  --board-options PartitionScheme=no_ota --build-path /tmp/c3 esp-at/esp-at
+  --board-options PartitionScheme=no_ota --build-path .build/c3-build .build/c3/esp-at
 ```
 
 `deploy.py` uses `$ARDUINO_DIRECTORIES_DATA`, else `./.arduino15` if it exists,
@@ -54,8 +57,8 @@ it:
 ARDUINO_DIRECTORIES_DATA=$HOME/.arduino15 python3 deploy.py build all
 ```
 
-A build can leave an untracked `esp-at/esp-at/build/` inside the submodule.
-Delete it before committing the submodule.
+`deploy.py` compiles a copy of the sketch under `.build/src/`, so the submodule
+stays untouched. Check `git -C esp-at status` is clean before committing it.
 
 The schematic is generated, never hand-edited. After changing
 `docs/gen_schematics.py`, regenerate it and look at the result:
@@ -91,7 +94,8 @@ partitions, USB CDC on boot.
 - **Defaults and behaviour:** anything a user sees (AT commands, BLE PIN rules,
   TCP access) is documented in `README.md`. Update it with the code.
 - **esp-at changes:** a fix to upstream esp-at is committed in the fork
-  (branch `ecodan`), then the submodule pointer is updated here. The commit
+  (branch `main`), then the submodule pointer is updated here. esp-at is the
+  framework only: don't add Ecodan code to it except in the plugin hooks. The commit
   message names the fork commit.
 
 ## Hardware rules (proposed, confirm before relaxing)
@@ -137,4 +141,4 @@ Ecodan logic once it exists in the fork). esp-at's own style stays as it is.
 - Keep commits focused. Describe the hardware impact (pins, serial settings,
   anything that writes to the heat pump, BLE or network access) in the message.
 - Don't commit build output (`dist/`, `.build/`, `build/`, `.arduino15/`,
-  `esp-at/esp-at/build/`).
+  `esp-at/esp-at/build/` if one appears).

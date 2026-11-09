@@ -330,6 +330,20 @@ def build_flags(args):
     return " ".join(flags)
 
 
+def stage_sketch(board):
+    """Copy the sketch into .build/src so arduino-cli never writes into the esp-at submodule.
+
+    arduino-cli leaves a build/ directory in the sketch folder even with --build-path,
+    so the compile runs on a copy. esp-at is only read.
+    """
+    src = sketch_dir(board)
+    dst = os.path.join(BUILD_CACHE, "src", board["chip"], sketch_name(board))
+    if os.path.isdir(dst):
+        shutil.rmtree(dst)
+    shutil.copytree(src, dst, ignore=shutil.ignore_patterns("build", ".git"))
+    return dst
+
+
 def build(board, flags, args):
     chip = CHIPS[board["chip"]]
     sketch = sketch_name(board)
@@ -338,6 +352,7 @@ def build(board, flags, args):
     print(f"== build {sketch} for {board['chip']} -> {os.path.relpath(dst, HERE)}")
     print(f"   flags: {flags}", flush=True)
     arduino_data_dir()
+    staged = stage_sketch(board)
     cmd = ["arduino-cli", "compile", "-b", chip["fqbn"],
            "--output-dir", dst,
            "--build-path", os.path.join(BUILD_CACHE, f"{board['chip']}-{sketch}"),
@@ -345,7 +360,7 @@ def build(board, flags, args):
            "--build-property", f"compiler.c.extra_flags={flags}",
            "--build-property", f"build.extra_flags={flags}",
            "--board-options", f"PartitionScheme={PARTITIONS}",
-           sketch_dir(board)]
+           staged]
     if args.verbose:
         cmd[2:2] = ["-v"]
     if subprocess.run(cmd).returncode:

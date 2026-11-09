@@ -109,14 +109,13 @@ If you cloned without `--recurse-submodules`, run `git submodule update --init`.
 `boards.toml` lists the physical boards by MAC address. Plug a board in and
 run `python3 deploy.py list` to see which ones are connected.
 
-A build leaves an untracked `esp-at/esp-at/build/` directory inside the
-submodule. Delete it before committing the submodule.
+Builds write to `dist/` and `.build/` in this repo. The submodule is only read.
 
 ## Repository layout
 
 - `esp-at/`: submodule, [aardbeiplantje/esp-at](https://github.com/aardbeiplantje/esp-at).
-  The pinned commit is on its `ecodan` branch. It has the BLE PIN and local-only
-  TCP changes.
+  The pinned commit is on its `main` branch. It has the BLE PIN and local-only
+  TCP changes, and is used as the firmware framework.
 - `deploy.py`: build, flash and monitor tool.
 - `boards.toml`: physical boards.
 - `docs/`: schematic and its generator.
