@@ -79,16 +79,17 @@ partitions, USB CDC on boot.
 - BLE: the NUS service with AT commands. It's off until a 6-digit PIN is set
   with `AT+BLE_PIN`, and the security mode can't be set to 0. A PIN of
   `000000` is refused. The PIN is set on the device, never in the repo.
-- The CN105 bridge runs over BLE (`AT+BLE_UART1`) or the TCP server
-  (`AT+TCP_SERVER_START`). Only local clients are accepted: loopback, RFC1918,
-  link-local and IPv6 ULA. Don't forward the TCP port on the router.
+- The CN105 link is not exposed over BLE or TCP yet. When it is, the TCP server
+  accepts only local clients (loopback, RFC1918, link-local, IPv6 ULA), and
+  the TCP port must not be forwarded on the router.
 - WiFi credentials are set on the device with AT commands, not in the repo.
 
 ## Things that must stay in sync
 
-- **Pins and serial settings:** the UART1 pins and the `AT+UART1=` line are in
-  `README.md` and the schematic generator. Change all three together. The
-  defaults for these are in esp-at (`UART1_RX_PIN` / `UART1_TX_PIN`).
+- **Pins and serial settings:** the CN105 pins and serial settings are in
+  `esp-at/esp-at/plugins.cpp` (`CN105_RX_PIN`, `CN105_TX_PIN`, `CN105_BAUD`,
+  `CN105_CONFIG`), `README.md` and the schematic generator. Change all of them
+  together.
 - **Wiring:** a pin change means regenerating `docs/ecodan.svg` and updating
   the table in `README.md`.
 - **Defaults and behaviour:** anything a user sees (AT commands, BLE PIN rules,
@@ -112,7 +113,8 @@ controller.
 - Connect the board to the heat pump only through the CN105 connector. Don't
   tie the heat pump's ground to mains earth, or to any other ground on the
   board's side, without an isolation plan.
-- Read-only by default. Anything that writes settings to the heat pump
+- The CN105 code is read-only: it parses and logs frames. The only write is the
+  hand-sent `AT+CN105_CONNECT` handshake. Anything else that writes settings to the heat pump
   (setpoints, mode, on/off) is off until explicitly enabled. It must be
   rate-limited and bounded to safe ranges in firmware, not only in a UI.
 - Outputs and writes default to off at boot. A reset must never command the

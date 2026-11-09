@@ -75,12 +75,12 @@
 <text x="60" y="530" font-size="13" text-anchor="start" font-weight="bold" fill="#1d2330">Wiring (proposed, verify on hardware):</text>
 <text x="60" y="550" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Each signal goes through a PC817 optocoupler. The ESP side has its own isolated 5 V and its GND is separate from the heat pump GND.</text>
 <text x="60" y="570" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- CN105 pin 1 not connected. Pin 2 GND, pin 3 +5V, pin 4 TX (heat pump out), pin 5 RX (heat pump in).</text>
-<text x="60" y="590" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Both paths are non-inverting: keep UART inversion off (AT+UART1 inverted = 0).</text>
+<text x="60" y="590" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Both paths are non-inverting: the firmware UART is not inverted.</text>
 <text x="60" y="610" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Parts: 2x PC817 (6N137 if you need more speed); 470R LED (HP side); 330R LED (ESP side);</text>
 <text x="60" y="630" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">  4k7 pull-up to +5V on the RX line (HP side); 10k pull-up to 3V3 on the GPIO17 line (ESP side);</text>
 <text x="60" y="650" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">  isolated 5 V to 5 V DC-DC, 1 W or more.</text>
-<text x="60" y="670" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- UART on GPIO17 (RX) and GPIO18 (TX): AT+UART1=2400,8,1,1,17,18</text>
-<text x="60" y="690" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">  (2400 baud, 8 data bits, even parity, 1 stop bit. Not checked against the Ecodan protocol.)</text>
+<text x="60" y="670" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Firmware UART on GPIO17 (RX) and GPIO18 (TX): 2400 baud, 8E1, set in plugins.cpp.</text>
+<text x="60" y="690" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">  (Not checked against the Ecodan protocol.)</text>
 <text x="60" y="710" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- USB-C on the ESP side ties its GND to the PC. Don't plug USB in while the heat pump is connected, or use a USB isolator.</text>
 <text x="60" y="730" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- Check the heat pump's own pull-ups on TX/RX first. If they're already there, drop the 4k7.</text>
 <text x="60" y="750" font-size="13" text-anchor="start" font-weight="normal" fill="#5b6475">- No mains on this board.</text>

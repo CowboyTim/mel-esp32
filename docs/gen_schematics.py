@@ -4,8 +4,8 @@
   python3 docs/gen_schematics.py docs
 
 Writes docs/ecodan.svg. Don't edit the SVG by hand: change this script and regenerate.
-Pins, net names and the UART settings here must match README.md and the esp-at
-UART1 defaults (AT+UART1=baud,data,parity,stop,rx,tx).
+Pins, net names and the UART settings here must match README.md and the CN105
+settings in esp-at/esp-at/plugins.cpp.
 
 Design: CN105 (heat pump side) -> two PC817 optocouplers -> ESP32 (isolated side).
 The ESP side gets its own 5 V from an isolated DC-DC, and its GND is separate from
@@ -186,12 +186,12 @@ notes = [
     "Wiring (proposed, verify on hardware):",
     "- Each signal goes through a PC817 optocoupler. The ESP side has its own isolated 5 V and its GND is separate from the heat pump GND.",
     "- CN105 pin 1 not connected. Pin 2 GND, pin 3 +5V, pin 4 TX (heat pump out), pin 5 RX (heat pump in).",
-    "- Both paths are non-inverting: keep UART inversion off (AT+UART1 inverted = 0).",
+    "- Both paths are non-inverting: the firmware UART is not inverted.",
     "- Parts: 2x PC817 (6N137 if you need more speed); 470R LED (HP side); 330R LED (ESP side);",
     "  4k7 pull-up to +5V on the RX line (HP side); 10k pull-up to 3V3 on the GPIO17 line (ESP side);",
     "  isolated 5 V to 5 V DC-DC, 1 W or more.",
-    "- UART on GPIO17 (RX) and GPIO18 (TX): AT+UART1=2400,8,1,1,17,18",
-    "  (2400 baud, 8 data bits, even parity, 1 stop bit. Not checked against the Ecodan protocol.)",
+    "- Firmware UART on GPIO17 (RX) and GPIO18 (TX): 2400 baud, 8E1, set in plugins.cpp.",
+    "  (Not checked against the Ecodan protocol.)",
     "- USB-C on the ESP side ties its GND to the PC. Don't plug USB in while the heat pump is connected, or use a USB isolator.",
     "- Check the heat pump's own pull-ups on TX/RX first. If they're already there, drop the 4k7.",
     "- No mains on this board.",

@@ -3,14 +3,19 @@
 An ESP32-S3 SuperMini that plugs into the CN105 service port of a Mitsubishi
 Ecodan heat pump. The firmware is [esp-at](https://github.com/aardbeiplantje/esp-at)
 (a submodule in `esp-at/`), which gives AT commands over USB serial and BLE,
-WiFi, a local TCP server and a UART1 bridge. The Ecodan logic will go in
-esp-at's plugin hooks.
+WiFi and a local TCP server. The CN105 code is in `esp-at/esp-at/plugins.cpp`,
+using esp-at's plugin hooks.
 
 ## Status
 
 - Firmware builds for `esp32s3` (`python3 deploy.py build ecodan`). Program
   storage use is about 34%.
-- Not done yet: the CN105 protocol, the Ecodan logic, and any Modbus interface.
+- CN105 link: reads and checks frames and logs them. Read-only, except
+  `AT+CN105_CONNECT`, which sends the connect request by hand. Frame format and
+  checksum come from public CN105 references and haven't been checked against an
+  Ecodan yet.
+- Not done yet: the Ecodan logic (what the frames mean), exposing the link over
+  BLE or TCP, and any Modbus interface.
 - The wiring is a proposal and hasn't been checked on a heat pump.
 
 ## Wiring
@@ -31,7 +36,7 @@ by hand.
 - Each signal line goes through a PC817 optocoupler. The ESP side has its own
   isolated 5 V from a DC-DC converter, and its GND is separate from the heat
   pump GND.
-- Both paths are non-inverting. Keep UART inversion off (`inverted = 0`).
+- Both paths are non-inverting. The firmware UART isn't inverted.
 - Parts: 2x PC817 (6N137 if you need more speed), 470R (opto A LED, heat pump
   side), 330R (opto B LED, ESP side), 4k7 pull-up to +5 V on the RX line (heat
   pump side), 10k pull-up to 3V3 on the GPIO17 line (ESP side), isolated 5 V
@@ -44,17 +49,11 @@ by hand.
 
 ### Serial settings
 
-The CN105 link is set with `AT+UART1=baud,data,parity,stop,rx,tx`. The
-esp-at parity codes are 0 = none, 1 = even, 2 = odd.
-
-```
-AT+UART1=2400,8,1,1,17,18
-```
-
-That's 2400 baud, 8 data bits, even parity, 1 stop bit, RX on GPIO17, TX on
-GPIO18. The 2400 8E1 setting comes from other CN105 projects and hasn't been
-checked against the Ecodan protocol. esp-at's default UART1 pins are GPIO0 and
-GPIO1, so set the pins before using the link.
+The CN105 link is fixed in `plugins.cpp`, not set with AT commands: 2400
+baud, 8 data bits, even parity, 1 stop bit, on Serial2 with RX on GPIO17 and TX
+on GPIO18. The 2400 8E1 setting comes from other CN105 projects and hasn't been
+checked against the Ecodan protocol. esp-at's UART1 isn't used for CN105, since
+its bridge treats bytes as text.
 
 ## First-time setup
 
@@ -71,25 +70,23 @@ GPIO1, so set the pins before using the link.
    AT+WIFI_SSID=<ssid>
    AT+WIFI_PASS=<password>
    AT+WIFI_ENABLED=1
-   AT+UART1=2400,8,1,1,17,18
-   AT+BLE_UART1=1            # CN105 bridge over BLE
-   AT+TCP_SERVER_PORT=<port>
-   AT+TCP_SERVER_START       # CN105 bridge over the local network
    AT+RESET
    ```
 
-4. Check the state with `AT+IP_STATUS?`, `AT+WIFI_STATUS?`, `AT+BLE_STATUS?`
-   and `AT+TCP_SERVER_STATUS?`.
+4. Check the state with `AT+IP_STATUS?`, `AT+WIFI_STATUS?` and `AT+BLE_STATUS?`.
+   On the CN105 link, `AT+CN105_STATUS?` shows the frame counts. The serial
+   log shows each frame (`[CN105] RX ...`).
 
 The full AT command list is in the esp-at README:
 [esp-at/README.md](esp-at/README.md) (or send `AT+?` or `AT+HELP?` to the board).
 
 ## Access
 
-- **BLE:** the Nordic UART Service. Pair with the PIN. The
-  [`ble_uart.pl`](esp-at/ble_uart.pl) client in esp-at connects to it.
-- **TCP:** only clients on the local network are accepted (loopback, RFC1918,
-  link-local, IPv6 ULA). Don't forward the port on the router.
+- **BLE:** the Nordic UART Service, for esp-at's AT commands. Pair with the PIN.
+  The [`ble_uart.pl`](esp-at/ble_uart.pl) client in esp-at connects to it.
+- **TCP:** the esp-at TCP server accepts only clients on the local network
+  (loopback, RFC1918, link-local, IPv6 ULA). Don't forward the port on the
+  router. The CN105 link isn't on it yet.
 - Config (PIN, security, WiFi, UART) is only set on the device. It's never
   stored in this repo.
 
@@ -115,7 +112,8 @@ Builds write to `dist/` and `.build/` in this repo. The submodule is only read.
 
 - `esp-at/`: submodule, [aardbeiplantje/esp-at](https://github.com/aardbeiplantje/esp-at).
   The pinned commit is on its `main` branch. It has the BLE PIN and local-only
-  TCP changes, and is used as the firmware framework.
+  TCP changes, and is used as the firmware framework. The CN105 code is in
+  `esp-at/esp-at/plugins.cpp`.
 - `deploy.py`: build, flash and monitor tool.
 - `boards.toml`: physical boards.
 - `docs/`: schematic and its generator.
@@ -123,8 +121,9 @@ Builds write to `dist/` and `.build/` in this repo. The submodule is only read.
 
 ## Open items
 
-- Confirm the CN105 pinout and serial settings on the actual Ecodan.
-- Implement the Ecodan protocol in the esp-at plugin hooks.
+- Confirm the CN105 pinout, serial settings and frame format on the actual Ecodan.
+- Work out what the frames mean (the Ecodan protocol) and decide on the
+  read-only set of values before any write is allowed.
 - Decide whether a Modbus interface is needed. The CN105 protocol isn't
   Modbus, so Modbus would need an adapter or a bridge on top of this board.
 
